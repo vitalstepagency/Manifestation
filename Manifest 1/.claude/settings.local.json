@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run check:*)",
+      "Bash(npm run dev)",
+      "Bash(timeout /t 5)",
+      "Bash(npm run build:*)",
+      "Bash(git init:*)",
+      "Bash(dir /b .env* 2)",
+      "Bash(nul)",
+      "Bash(git add:*)",
+      "Bash(del nul 2)",
+      "Bash(git commit:*)",
+      "Bash(npm install:*)",
+      "Bash(if not exist \"systems\" mkdir systems)",
+      "Bash(npm cache clean:*)",
+      "Bash(npm run dev:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(if not exist \"C:\\Users\\Dylan\\OneDrive\\Desktop\\Manifest\\Manifest 1\\src\\components\\universe\" mkdir \"C:\\Users\\Dylan\\OneDrive\\Desktop\\Manifest\\Manifest 1\\src\\components\\universe\")",
+      "Bash(npx vite build)",
+      "Bash(taskkill:*)",
+      "Bash(timeout /t 2 /nobreak)",
+      "Bash(npx supabase:*)",
+      "Bash(netstat:*)",
+      "Bash(awk:*)",
+      "Bash(curl:*)",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(kill:*)",
+      "Bash(npx next dev -p 3002)",
+      "Bash(npx next dev -p 3003)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

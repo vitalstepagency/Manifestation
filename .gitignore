@@ -1,0 +1,136 @@
+# ===================================
+# CRITICAL - ENVIRONMENT VARIABLES
+# ===================================
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+.env*.local
+
+# ===================================
+# DEPENDENCIES
+# ===================================
+node_modules/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# ===================================
+# BUILD OUTPUTS
+# ===================================
+# React/CRA builds
+build/
+dist/
+
+# Next.js builds
+.next/
+out/
+
+# Cache directories
+.cache/
+.parcel-cache/
+
+# ===================================
+# TESTING
+# ===================================
+coverage/
+.nyc_output/
+*.lcov
+
+# ===================================
+# LOGS
+# ===================================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ===================================
+# IDE / EDITOR
+# ===================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# ===================================
+# OS FILES
+# ===================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ===================================
+# MISC SENSITIVE
+# ===================================
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+
+# ===================================
+# DEPLOYMENT
+# ===================================
+.vercel
+.netlify
+.firebase/
+
+# ===================================
+# DATABASE
+# ===================================
+*.sqlite
+*.sqlite3
+*.db
+
+# ===================================
+# TEMPORARY FILES
+# ===================================
+*.tmp
+*.temp
+*.swp
+*.bak
+*.backup
+*~
+
+# ===================================
+# SUPABASE (if using local dev)
+# ===================================
+supabase/.branches/
+supabase/.temp/
+
+# ===================================
+# TYPESCRIPT
+# ===================================
+*.tsbuildinfo
+
+# ===================================
+# TEMPORARY ADMIN SCRIPTS
+# (These contain hardcoded credentials)
+# ===================================
+**/fix_password.*
+**/create_admin.*
+**/update_password.*
+**/reset_everything.*
+**/fix_admin.*
+**/update_admin_password.*
+**/clear_storage.html
