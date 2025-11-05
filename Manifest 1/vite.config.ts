@@ -3,13 +3,19 @@ import react from '@vitejs/plugin-react'
 import tsconfigPaths from "vite-tsconfig-paths";
 import { traeBadgePlugin } from 'vite-plugin-trae-solo-badge';
 
+// Debug: Log environment variables during build
+console.log('🔍 Vite Build Environment Variables:');
+console.log('VITE_SUPABASE_URL:', process.env.VITE_SUPABASE_URL ? '✅ SET' : '❌ MISSING');
+console.log('VITE_SUPABASE_ANON_KEY:', process.env.VITE_SUPABASE_ANON_KEY ? '✅ SET' : '❌ MISSING');
+console.log('VITE_UNSPLASH_ACCESS_KEY:', process.env.VITE_UNSPLASH_ACCESS_KEY ? '✅ SET' : '❌ MISSING');
+
 // https://vite.dev/config/
 export default defineConfig({
   define: {
     // Explicitly expose environment variables for production builds
-    'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(process.env.VITE_SUPABASE_URL),
-    'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY),
-    'import.meta.env.VITE_UNSPLASH_ACCESS_KEY': JSON.stringify(process.env.VITE_UNSPLASH_ACCESS_KEY),
+    'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(process.env.VITE_SUPABASE_URL || ''),
+    'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY || ''),
+    'import.meta.env.VITE_UNSPLASH_ACCESS_KEY': JSON.stringify(process.env.VITE_UNSPLASH_ACCESS_KEY || ''),
   },
   build: {
     sourcemap: 'hidden',
