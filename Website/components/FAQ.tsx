@@ -137,7 +137,7 @@ export default function FAQ() {
             Still have questions?
           </h3>
           <p className="text-gray-600 mb-6 leading-relaxed">
-            We're here to help. Reach out anytime.
+            We2019re here to help. Reach out anytime.
           </p>
           <a
             href="mailto:support@manifest.app"

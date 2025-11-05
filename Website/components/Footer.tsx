@@ -50,7 +50,7 @@ export default function Footer() {
               <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Manifest</span>
             </Link>
             <p className="text-gray-600 mb-6 max-w-sm">
-              Transform your life through manifestation. The world's first 3D goal-tracking platform that makes success inevitable.
+              Transform your life through manifestation. The world2019s first 3D goal-tracking platform that makes success inevitable.
             </p>
             {/* Social links */}
             <div className="flex gap-4">

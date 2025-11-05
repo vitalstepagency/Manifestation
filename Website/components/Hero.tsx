@@ -42,7 +42,7 @@ export default function Hero() {
 
           {/* REVOLUTIONARY HEADLINE - Liquid gradient with shimmer */}
           <h2 className="revolutionary-headline mb-10">
-            That's Why You Can See Them.
+            That2019s Why You Can See Them.
           </h2>
 
           {/* Subheadline */}

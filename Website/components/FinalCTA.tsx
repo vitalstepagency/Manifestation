@@ -37,7 +37,7 @@ export default function FinalCTA() {
             transition={{ duration: 0.2, delay: 0.1, ease: "easeOut" }}
             className="text-4xl md:text-6xl font-bold mb-8 leading-tight text-gray-900"
           >
-            In 6 months, you'll be{' '}
+            In 6 months, you2019ll be{' '}
             <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">one of two people:</span>
           </motion.h2>
 
