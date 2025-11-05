@@ -3,17 +3,16 @@ import type { Database } from '../types';
 import type { Profile, Habit, NonNegotiable, ProgressEntry, JournalEntry, ManifestationNode } from '../types/index';
 
 // Supabase configuration
-// Use custom-defined variables that are inlined by Vite during build
-const supabaseUrl = (typeof __VITE_SUPABASE_URL__ !== 'undefined' ? __VITE_SUPABASE_URL__ : import.meta.env.VITE_SUPABASE_URL) || '';
-const supabaseAnonKey = (typeof __VITE_SUPABASE_ANON_KEY__ !== 'undefined' ? __VITE_SUPABASE_ANON_KEY__ : import.meta.env.VITE_SUPABASE_ANON_KEY) || '';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 const supabaseServiceRoleKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || '';
 
 // Debug logging for production environment variable issues
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Supabase Environment Variables Debug:');
-  console.error('VITE_SUPABASE_URL:', supabaseUrl ? 'SET' : 'MISSING');
+  console.error('❌ Supabase Environment Variables Missing:');
+  console.error('VITE_SUPABASE_URL:', supabaseUrl || 'MISSING');
   console.error('VITE_SUPABASE_ANON_KEY:', supabaseAnonKey ? 'SET' : 'MISSING');
-  console.error('import.meta.env:', import.meta.env);
+  console.error('All import.meta.env vars:', import.meta.env);
   throw new Error(`Missing Supabase environment variables. URL: ${supabaseUrl ? 'SET' : 'MISSING'}, Key: ${supabaseAnonKey ? 'SET' : 'MISSING'}`);
 }
 
