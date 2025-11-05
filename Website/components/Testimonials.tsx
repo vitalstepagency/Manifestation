@@ -237,7 +237,7 @@ export default function Testimonials() {
 
                 {/* Quote */}
                 <blockquote className="text-2xl md:text-3xl font-medium text-gray-900 mb-8 leading-relaxed">
-                  201c{currentTestimonial.quote}201d
+                  &ldquo;{currentTestimonial.quote}&rdquo;
                 </blockquote>
 
                 {/* Achievement Metrics */}
