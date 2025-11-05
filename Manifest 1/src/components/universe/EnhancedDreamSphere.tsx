@@ -106,8 +106,8 @@ export default function EnhancedDreamSphere({
         : visualState.emissiveIntensity;
 
       sphereRef.current.material.emissiveIntensity = THREE.MathUtils.lerp(
-        sphereRef.current.material.emissiveIntensity,
-        targetIntensity,
+        sphereRef.current.material.emissiveIntensity as number,
+        targetIntensity as number,
         0.1
       );
     }

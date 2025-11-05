@@ -431,7 +431,14 @@ export default function Onboarding() {
   const selectEnergy = async (energy: keyof typeof ENERGY_LEVELS) => {
     const newState = { energyLevel: energy };
     setState(prev => ({ ...prev, ...newState }));
-    setEnergyLevel(energy);
+    // Convert energy string to number: drained=1, building=2, charged=3, unstoppable=4
+    const energyLevelMap: Record<keyof typeof ENERGY_LEVELS, number> = {
+      drained: 1,
+      building: 2,
+      charged: 3,
+      unstoppable: 4
+    };
+    setEnergyLevel(energyLevelMap[energy]);
     await saveProgress(newState);
 
     // INSTANT RESPONSE: Only 200ms delay for smooth transition
@@ -466,11 +473,15 @@ export default function Onboarding() {
 
       // Save non-negotiables to database
       console.log('Saving non-negotiables:', state.nonNegotiables);
-      for (const item of state.nonNegotiables) {
+      for (let index = 0; index < state.nonNegotiables.length; index++) {
+        const item = state.nonNegotiables[index];
         try {
           const { data, error } = await db.nonNegotiables.create({
             user_id: user.id,
-            title: item
+            title: item,
+            is_completed: false,
+            completion_date: '',
+            priority_order: index
           });
 
           if (error) {

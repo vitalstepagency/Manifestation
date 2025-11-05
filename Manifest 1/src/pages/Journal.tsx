@@ -135,15 +135,17 @@ const Journal = () => {
     }
 
     // Save to Supabase
-    try {
-      await addJournalEntry({
-        content: entry.reflection,
-        mood: entry.mood,
-        energyLevel: entry.energyLevel,
-        tags: entry.tags
-      });
-    } catch (error) {
-      console.error('Failed to save to Supabase:', error);
+    if (user) {
+      try {
+        await addJournalEntry({
+          user_id: user.id,
+          content: entry.reflection,
+          gratitude_items: entry.gratitude,
+          daily_wins: entry.wins
+        });
+      } catch (error) {
+        console.error('Failed to save to Supabase:', error);
+      }
     }
 
     resetForm();

@@ -31,8 +31,8 @@ const HabitsTracker = () => {
     targetCount: 1
   });
 
-  const { habits, addHabit, updateHabit, deleteHabit } = useManifestStore();
-  const { totalStreak, completedHabitsToday } = useManifestSelectors();
+  const { user, habits, addHabit, updateHabit, deleteHabit } = useManifestStore();
+  const { completedHabitsToday, currentStreak } = useManifestSelectors();
 
   const filteredHabits = habits.filter(habit => 
     filter === 'all' || habit.category === filter
@@ -47,8 +47,23 @@ const HabitsTracker = () => {
       return;
     }
 
+    if (!user) {
+      toast.error('User not found');
+      return;
+    }
+
     try {
-      await addHabit(newHabit);
+      await addHabit({
+        user_id: user.id,
+        title: newHabit.title,
+        description: newHabit.description,
+        type: newHabit.category as 'building' | 'breaking',
+        category: newHabit.category,
+        streak_count: 0,
+        is_completed_today: false,
+        completionDates: [],
+        isActive: true
+      });
       setNewHabit({
         title: '',
         description: '',
@@ -99,9 +114,9 @@ const HabitsTracker = () => {
     setNewHabit({
       title: habit.title,
       description: habit.description || '',
-      category: habit.category,
-      frequency: habit.frequency,
-      targetCount: habit.targetCount
+      category: habit.type as 'building' | 'breaking',
+      frequency: 'daily',
+      targetCount: 1
     });
     setShowAddForm(true);
   };
@@ -168,7 +183,7 @@ const HabitsTracker = () => {
             </div>
             <div>
               <p className="text-white/70 text-sm">Current Streak</p>
-              <p className="text-2xl font-bold text-white">{totalStreak} days</p>
+              <p className="text-2xl font-bold text-white">{currentStreak} days</p>
             </div>
           </div>
         </motion.div>

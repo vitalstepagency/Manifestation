@@ -36,7 +36,7 @@ export function useOnboardingProgress() {
   const [progress, setProgress] = useState<OnboardingProgress>(getInitialProgress);
   const [isLoading, setIsLoading] = useState(true);
   const [hasRestoredProgress, setHasRestoredProgress] = useState(false);
-  const autosaveTimerRef = useRef<NodeJS.Timeout>();
+  const autosaveTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const screenStartTimeRef = useRef<Date>(new Date());
 
   // =========================================================================
@@ -326,11 +326,11 @@ async function loadFromSupabase(userId: string): Promise<OnboardingProgress | nu
   try {
     const { data: profile, error } = await db.profiles.get(userId);
 
-    if (error || !profile?.onboarding_progress) {
+    if (error || !profile || !profile.onboarding_progress) {
       return null;
     }
 
-    const progress = profile.onboarding_progress;
+    const progress = profile.onboarding_progress as any;
 
     // Convert to OnboardingProgress type
     return {

@@ -11,14 +11,14 @@ interface HabitCardProps {
 }
 
 const HabitCard = ({ habit }: HabitCardProps) => {
-  const { updateHabitProgress } = useManifestStore();
+  const { updateHabit } = useManifestStore();
   const [isCompleting, setIsCompleting] = useState(false);
-  
+
   const today = new Date().toISOString().split('T')[0];
   const isCompletedToday = habit.completionDates?.includes(today) || false;
   const streakDays = calculateStreakDays(habit.completionDates || []);
   const streakEmoji = getStreakEmoji(streakDays);
-  const xpReward = calculateXP(habit.category, streakDays);
+  const xpReward = calculateXP(habit.type as 'building' | 'breaking', streakDays);
 
   const handleToggleCompletion = async () => {
     if (isCompleting) return;
@@ -30,7 +30,7 @@ const HabitCard = ({ habit }: HabitCardProps) => {
         ? (habit.completionDates || []).filter(date => date !== today)
         : [...(habit.completionDates || []), today];
       
-      await updateHabitProgress(habit.id, newCompletionDates);
+      await updateHabit(habit.id, { completionDates: newCompletionDates, is_completed_today: !isCompletedToday });
       
       if (!isCompletedToday) {
         toast.success(`+${xpReward} XP! ${habit.title} completed!`, {

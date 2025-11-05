@@ -47,20 +47,21 @@ const AIInsights = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [patternAnalysis, setPatternAnalysis] = useState<PatternAnalysis | null>(null);
 
-  const { habits, progressEntries, energyLevel, user } = useManifestStore();
-  const { totalStreak, completedHabitsToday, weeklyScore } = useManifestSelectors();
+  const { habits, progressEntries, currentEnergyLevel, user } = useManifestStore();
+  const { currentStreak, completedHabitsToday } = useManifestSelectors();
 
   // Generate AI insights based on user data
   const generateInsights = () => {
     setIsAnalyzing(true);
-    
+
     setTimeout(() => {
       const newInsights: AIInsight[] = [];
       const timeContext = getTimeContext();
+      const todayCompletionRate = habits.length > 0 ? (completedHabitsToday / habits.length) * 100 : 0;
 
       // Pattern Recognition Insights
       if (habits.length > 0) {
-        const completionRate = (completedHabitsToday / habits.length) * 100;
+        const completionRate = todayCompletionRate;
         
         if (completionRate >= 80) {
           newInsights.push({
@@ -88,8 +89,14 @@ const AIInsights = () => {
       }
 
       // Energy Pattern Analysis
-      if (energyLevel) {
-        const energyInsight = getContextualInsight(energyLevel, timeContext.period);
+      if (currentEnergyLevel) {
+        const energyInsight = getContextualInsight(
+          timeContext.period,
+          currentEnergyLevel,
+          currentStreak,
+          completedHabitsToday,
+          habits.length
+        );
         newInsights.push({
           id: 'energy-optimization',
           type: 'recommendation',
@@ -103,24 +110,24 @@ const AIInsights = () => {
       }
 
       // Streak Analysis
-      if (totalStreak > 0) {
-        if (totalStreak >= 7) {
+      if (currentStreak > 0) {
+        if (currentStreak >= 7) {
           newInsights.push({
             id: 'streak-milestone',
             type: 'achievement',
             title: 'Streak Milestone Achieved',
-            description: `${totalStreak} days of consistency! You're in the top 10% of users. Your discipline is becoming automatic.`,
+            description: `${currentStreak} days of consistency! You're in the top 10% of users. Your discipline is becoming automatic.`,
             confidence: 100,
             actionable: false,
             category: 'progress',
             timestamp: new Date().toISOString()
           });
-        } else if (totalStreak >= 3) {
+        } else if (currentStreak >= 3) {
           newInsights.push({
             id: 'building-momentum',
             type: 'motivation',
             title: 'Momentum Building Detected',
-            description: `${totalStreak} days strong! You're entering the habit formation zone. Keep this energy flowing.`,
+            description: `${currentStreak} days strong! You're entering the habit formation zone. Keep this energy flowing.`,
             confidence: 88,
             actionable: false,
             category: 'progress',
@@ -172,8 +179,8 @@ const AIInsights = () => {
       }
 
       // Weekly Performance Prediction
-      if (weeklyScore > 0) {
-        const projectedScore = weeklyScore * (7 / new Date().getDay() || 7);
+      if (todayCompletionRate > 0) {
+        const projectedScore = todayCompletionRate * (7 / new Date().getDay() || 7);
         newInsights.push({
           id: 'weekly-projection',
           type: 'pattern',
@@ -203,10 +210,10 @@ const AIInsights = () => {
       // Generate pattern analysis
       setPatternAnalysis({
         bestPerformanceTime: timeContext.period === 'morning' ? 'Morning (6-10 AM)' : timeContext.period === 'afternoon' ? 'Afternoon (12-5 PM)' : 'Evening (6-10 PM)',
-        consistencyScore: Math.min(totalStreak * 10, 100),
-        streakPattern: totalStreak > 7 ? 'Strong upward trend' : totalStreak > 3 ? 'Building momentum' : 'Early formation stage',
-        energyCorrelation: energyLevel === 'high' ? 'High energy correlates with better completion' : energyLevel === 'medium' ? 'Moderate energy, consistent performance' : 'Low energy periods need strategic habit selection',
-        weeklyTrend: weeklyScore > 80 ? 'improving' : weeklyScore > 50 ? 'stable' : 'declining'
+        consistencyScore: Math.min(currentStreak * 10, 100),
+        streakPattern: currentStreak > 7 ? 'Strong upward trend' : currentStreak > 3 ? 'Building momentum' : 'Early formation stage',
+        energyCorrelation: currentEnergyLevel ? `Energy level ${currentEnergyLevel} tracked` : 'Energy tracking available',
+        weeklyTrend: todayCompletionRate > 80 ? 'improving' : todayCompletionRate > 50 ? 'stable' : 'declining'
       });
 
       setIsAnalyzing(false);
@@ -215,7 +222,7 @@ const AIInsights = () => {
 
   useEffect(() => {
     generateInsights();
-  }, [habits, progressEntries, energyLevel, totalStreak]);
+  }, [habits, progressEntries, currentEnergyLevel, currentStreak]);
 
   const filteredInsights = insights.filter(insight => 
     selectedCategory === 'all' || insight.category === selectedCategory

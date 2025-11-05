@@ -28,7 +28,7 @@ import PerfectDayTracker from '../components/PerfectDayTracker';
 import { FadeIn, SlideUp, ScaleIn, StaggerReveal } from '../components/ScrollReveal';
 
 const Dashboard = () => {
-  const { user, habits, energyLevel, setEnergyLevel, profile } = useManifestStore();
+  const { user, habits, currentEnergyLevel, setEnergyLevel, profile } = useManifestStore();
   const { currentStreak, completedHabitsToday, totalActiveHabits } = useManifestSelectors();
   const [timeContext, setTimeContext] = useState(getTimeContext());
 
@@ -84,7 +84,7 @@ const Dashboard = () => {
   const motivationalMessage = getMotivationalMessage(currentStreak);
   const contextualInsight = getContextualInsight(
     timeContext.period,
-    energyLevel,
+    currentEnergyLevel,
     currentStreak,
     completedHabitsToday,
     totalActiveHabits
@@ -129,7 +129,7 @@ const Dashboard = () => {
     },
     {
       title: 'Energy Level',
-      value: energyLevel || 0,
+      value: currentEnergyLevel || 0,
       unit: '/4',
       icon: Zap,
       color: 'from-purple-500 to-pink-500',
@@ -243,7 +243,6 @@ const Dashboard = () => {
       {/* Stats Grid - PREMIUM STAGGER REVEAL */}
       <StaggerReveal
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-        stagger={0.1}
         delay={0.3}
       >
         {statsData.map((stat) => (
@@ -322,7 +321,7 @@ const Dashboard = () => {
         >
           {/* Energy Check */}
           <EnergyCheck 
-            currentLevel={energyLevel}
+            currentLevel={currentEnergyLevel}
             onLevelChange={setEnergyLevel}
           />
 

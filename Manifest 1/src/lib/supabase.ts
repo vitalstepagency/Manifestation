@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '../types';
+import type { Profile, Habit, NonNegotiable, ProgressEntry, JournalEntry, ManifestationNode } from '../types/index';
 
 // Supabase configuration
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
@@ -73,27 +74,27 @@ export const db = {
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
+        .single() as { data: Profile | null; error: any };
       return { data, error };
     },
 
     create: async (profile: Database['public']['Tables']['profiles']['Insert']) => {
       const { data, error } = await supabase
         .from('profiles')
-        .insert(profile)
+        .insert(profile as any)
         .select()
-        .single();
+        .single() as { data: Profile | null; error: any };
       return { data, error };
     },
 
     update: async (userId: string, updates: Database['public']['Tables']['profiles']['Update']) => {
-      const { data, error } = await supabase
-        .from('profiles')
+      const result = await (supabase
+        .from('profiles') as any)
         .update(updates)
         .eq('id', userId)
         .select()
         .single();
-      return { data, error };
+      return result as { data: Profile | null; error: any };
     }
   },
 
@@ -104,34 +105,34 @@ export const db = {
         .from('habits')
         .select('*')
         .eq('user_id', userId)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false }) as { data: Habit[] | null; error: any };
       return { data, error };
     },
 
     create: async (habit: Database['public']['Tables']['habits']['Insert']) => {
       const { data, error } = await supabase
         .from('habits')
-        .insert(habit)
+        .insert(habit as any)
         .select()
-        .single();
+        .single() as { data: Habit | null; error: any };
       return { data, error };
     },
 
     update: async (habitId: string, updates: Database['public']['Tables']['habits']['Update']) => {
-      const { data, error } = await supabase
-        .from('habits')
+      const result = await (supabase
+        .from('habits') as any)
         .update(updates)
         .eq('id', habitId)
         .select()
         .single();
-      return { data, error };
+      return result as { data: Habit | null; error: any };
     },
 
     delete: async (habitId: string) => {
       const { error } = await supabase
         .from('habits')
         .delete()
-        .eq('id', habitId);
+        .eq('id', habitId) as { error: any };
       return { error };
     }
   },
@@ -143,34 +144,34 @@ export const db = {
         .from('non_negotiables')
         .select('*')
         .eq('user_id', userId)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false }) as { data: NonNegotiable[] | null; error: any };
       return { data, error };
     },
 
     create: async (nonNegotiable: Database['public']['Tables']['non_negotiables']['Insert']) => {
-      const { data, error } = await supabase
+      const { data, error} = await supabase
         .from('non_negotiables')
-        .insert(nonNegotiable)
+        .insert(nonNegotiable as any)
         .select()
-        .single();
+        .single() as { data: NonNegotiable | null; error: any };
       return { data, error };
     },
 
     update: async (id: string, updates: Database['public']['Tables']['non_negotiables']['Update']) => {
-      const { data, error } = await supabase
-        .from('non_negotiables')
+      const result = await (supabase
+        .from('non_negotiables') as any)
         .update(updates)
         .eq('id', id)
         .select()
         .single();
-      return { data, error };
+      return result as { data: NonNegotiable | null; error: any };
     },
 
     delete: async (id: string) => {
       const { error } = await supabase
         .from('non_negotiables')
         .delete()
-        .eq('id', id);
+        .eq('id', id) as { error: any };
       return { error };
     }
   },
@@ -190,7 +191,7 @@ export const db = {
         query = query.lte('date', endDate);
       }
 
-      const { data, error } = await query.order('date', { ascending: false });
+      const { data, error } = await query.order('date', { ascending: false }) as { data: ProgressEntry[] | null; error: any };
       return { data, error };
     },
 
@@ -200,27 +201,27 @@ export const db = {
         .select('*')
         .eq('user_id', date)
         .eq('date', date)
-        .single();
+        .single() as { data: ProgressEntry | null; error: any };
       return { data, error };
     },
 
     create: async (entry: Database['public']['Tables']['progress_entries']['Insert']) => {
       const { data, error } = await supabase
         .from('progress_entries')
-        .insert(entry)
+        .insert(entry as any)
         .select()
-        .single();
+        .single() as { data: ProgressEntry | null; error: any };
       return { data, error };
     },
 
     update: async (id: string, updates: Database['public']['Tables']['progress_entries']['Update']) => {
-      const { data, error } = await supabase
-        .from('progress_entries')
+      const result = await (supabase
+        .from('progress_entries') as any)
         .update(updates)
         .eq('id', id)
         .select()
         .single();
-      return { data, error };
+      return result as { data: ProgressEntry | null; error: any };
     }
   },
 
@@ -232,34 +233,34 @@ export const db = {
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
-        .limit(limit);
+        .limit(limit) as { data: JournalEntry[] | null; error: any };
       return { data, error };
     },
 
     create: async (entry: Database['public']['Tables']['journal_entries']['Insert']) => {
       const { data, error } = await supabase
         .from('journal_entries')
-        .insert(entry)
+        .insert(entry as any)
         .select()
-        .single();
+        .single() as { data: JournalEntry | null; error: any };
       return { data, error };
     },
 
     update: async (id: string, updates: Database['public']['Tables']['journal_entries']['Update']) => {
-      const { data, error } = await supabase
-        .from('journal_entries')
+      const result = await (supabase
+        .from('journal_entries') as any)
         .update(updates)
         .eq('id', id)
         .select()
         .single();
-      return { data, error };
+      return result as { data: JournalEntry | null; error: any };
     },
 
     delete: async (id: string) => {
       const { error } = await supabase
         .from('journal_entries')
         .delete()
-        .eq('id', id);
+        .eq('id', id) as { error: any };
       return { error };
     }
   },
@@ -275,7 +276,7 @@ export const db = {
         .select('*')
         .eq('user_id', userId)
         .eq('is_active', true)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false }) as { data: ManifestationNode[] | null; error: any };
       return { data, error };
     },
 
@@ -287,10 +288,11 @@ export const db = {
         .from('manifestation_nodes')
         .insert({
           user_id: userId,
+          is_active: true,
           ...nodeData,
-        })
+        } as any)
         .select()
-        .single();
+        .single() as { data: ManifestationNode | null; error: any };
       return { data, error };
     },
 
@@ -298,26 +300,26 @@ export const db = {
      * Update an existing manifestation node
      */
     update: async (nodeId: string, updates: Database['public']['Tables']['manifestation_nodes']['Update']) => {
-      const { data, error } = await supabase
-        .from('manifestation_nodes')
+      const result = await (supabase
+        .from('manifestation_nodes') as any)
         .update(updates)
         .eq('id', nodeId)
         .select()
         .single();
-      return { data, error };
+      return result as { data: ManifestationNode | null; error: any };
     },
 
     /**
      * Soft delete a manifestation node (set is_active to false)
      */
     delete: async (nodeId: string) => {
-      const { data, error } = await supabase
-        .from('manifestation_nodes')
+      const result = await (supabase
+        .from('manifestation_nodes') as any)
         .update({ is_active: false })
         .eq('id', nodeId)
         .select()
         .single();
-      return { data, error };
+      return result as { data: ManifestationNode | null; error: any };
     },
 
     /**
@@ -336,13 +338,13 @@ export const db = {
         updates.achieved_at = new Date().toISOString();
       }
 
-      const { data, error } = await supabase
-        .from('manifestation_nodes')
+      const result = await (supabase
+        .from('manifestation_nodes') as any)
         .update(updates)
         .eq('id', nodeId)
         .select()
         .single();
-      return { data, error };
+      return result as { data: ManifestationNode | null; error: any };
     },
   },
 
@@ -361,14 +363,14 @@ export const db = {
         // Get all profiles
         const { data: profiles, error: profilesError } = await supabaseAdmin
           .from('profiles')
-          .select('*');
+          .select('*') as { data: Profile[] | null; error: any };
 
         if (profilesError) {
           throw profilesError;
         }
 
         // Create a map of profiles by user ID for quick lookup
-        const profilesMap = new Map();
+        const profilesMap = new Map<string, Profile>();
         (profiles || []).forEach(profile => {
           profilesMap.set(profile.id, profile);
         });
@@ -499,11 +501,11 @@ export const db = {
             .from('profiles')
             .select('id')
             .eq('id', existingAuthUser.id)
-            .single();
-          
+            .single() as { data: { id: string } | null; error: any };
+
           if (existingProfile) {
-            return { 
-              data: null, 
+            return {
+              data: null,
               error: { message: `A test account with email ${email} already exists` }
             };
           } else {
@@ -518,8 +520,8 @@ export const db = {
             .from('profiles')
             .select('id')
             .eq('email', email)
-            .single();
-          
+            .single() as { data: { id: string } | null; error: any };
+
           if (orphanedProfile) {
             // Delete orphaned profile
             await supabaseAdmin
@@ -558,11 +560,11 @@ export const db = {
             full_name: userData.fullName,
             manifestation_goal: userData.manifestationGoal,
             onboarding_completed: false
-          }, {
+          } as any, {
             onConflict: 'id'
           })
           .select()
-          .single();
+          .single() as { data: Profile | null; error: any };
 
         if (profileError) {
           // If profile creation fails, clean up the auth user

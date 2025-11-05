@@ -64,7 +64,8 @@ function App() {
           setTimeout(() => reject(new Error('getSession timeout')), 3000)
         );
 
-        const { data: { session }, error } = await Promise.race([sessionPromise, timeoutPromise]);
+        const result = await Promise.race([sessionPromise, timeoutPromise]) as any;
+        const { data: { session } = { session: null }, error } = result || {};
 
         if (error) {
           console.error('App.tsx - Error getting session:', error);
@@ -107,7 +108,7 @@ function App() {
       console.log('App.tsx - Auth state changed:', event, session?.user?.id);
       
       if (session?.user) {
-        setUser(session.user);
+        setUser(session.user as any);
         
         // Safely call fetchProfile with error handling and timeout
         try {
@@ -156,13 +157,15 @@ function App() {
           .from('profiles')
           .select('onboarding_completed')
           .eq('id', isImpersonating.targetUserId)
-          .single();
+          .single() as { data: { onboarding_completed?: boolean } | null; error: any };
 
         if (error) {
           console.error('Error loading impersonated user profile:', error);
           setImpersonatedUserOnboardingComplete(false);
+        } else if (profile) {
+          setImpersonatedUserOnboardingComplete(profile.onboarding_completed || false);
         } else {
-          setImpersonatedUserOnboardingComplete(profile?.onboarding_completed || false);
+          setImpersonatedUserOnboardingComplete(false);
         }
       } catch (error) {
         console.error('Failed to load impersonated user profile:', error);

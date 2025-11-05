@@ -194,7 +194,7 @@ export const useManifestStore = create<ManifestStore>()(
 
         // Update UI IMMEDIATELY (optimistic update)
         set((state) => ({
-          manifestationNodes: [...state.manifestationNodes, optimisticNode],
+          manifestationNodes: [...state.manifestationNodes, { ...optimisticNode, is_active: true }],
         }));
 
         // Sync to database in background
@@ -202,7 +202,7 @@ export const useManifestStore = create<ManifestStore>()(
           console.log("➕ Adding manifestation node:", nodeData.title);
           const { data, error } = await db.manifestationNodes.create(
             user.id,
-            nodeData
+            { ...nodeData, is_active: true } as any
           );
 
           if (error) {

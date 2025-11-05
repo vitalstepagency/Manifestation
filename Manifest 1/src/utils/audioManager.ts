@@ -252,8 +252,11 @@ class AudioManagerClass {
       await audio.play();
 
       // Fade in
-      if (options.fadeIn || track.fadeIn) {
-        this.fadeIn(audio, options.fadeIn || track.fadeIn || 0);
+      const fadeInValue = (track.type === 'ambient')
+        ? (track as any).fadeIn
+        : undefined;
+      if (options.fadeIn || fadeInValue) {
+        this.fadeIn(audio, options.fadeIn || fadeInValue || 0);
       }
 
       // Track active playback
@@ -266,9 +269,12 @@ class AudioManagerClass {
       };
 
       // Auto fade out before end
-      if (options.fadeOut || track.fadeOut) {
-        const fadeOutTime = options.fadeOut || track.fadeOut || 0;
-        const duration = track.duration || 0;
+      const fadeOutValue = (track.type === 'ambient')
+        ? (track as any).fadeOut
+        : undefined;
+      if (options.fadeOut || fadeOutValue) {
+        const fadeOutTime = options.fadeOut || fadeOutValue || 0;
+        const duration = (track as any).duration || 0;
         if (duration > fadeOutTime) {
           setTimeout(() => {
             this.fadeOut(audio, fadeOutTime);

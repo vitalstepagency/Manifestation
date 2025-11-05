@@ -315,12 +315,16 @@ export const PERFECT_DAY_TRACKER: AnimationPreset = {
 
 export const CONFETTI_PIECE: AnimationPreset = {
   initial: { y: -10, rotate: 0, opacity: 1 },
-  animate: (windowHeight: number, windowWidth: number) => ({
-    y: windowHeight + 10,
-    rotate: Math.random() * 360,
-    x: Math.random() * windowWidth,
-    opacity: [1, 1, 0],
-  }),
+  animate: (() => {
+    const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
+    const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 1200;
+    return {
+      y: windowHeight + 10,
+      rotate: Math.random() * 360,
+      x: Math.random() * windowWidth,
+      opacity: [1, 1, 0],
+    };
+  }) as any,
   transition: {
     duration: 2 + Math.random(),
     ease: 'easeOut',

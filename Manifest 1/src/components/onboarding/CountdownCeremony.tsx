@@ -189,7 +189,7 @@ export const CountdownCeremony: React.FC<CountdownCeremonyProps> = ({
       transition: {
         duration: 1,
         repeat: Infinity,
-        ease: 'easeOut',
+        ease: [0, 0, 0.2, 1] as any,
       },
     },
   };
@@ -274,7 +274,7 @@ export const CountdownCeremony: React.FC<CountdownCeremonyProps> = ({
                 transition={{
                   duration: 2,
                   repeat: Infinity,
-                  ease: 'easeInOut',
+                  ease: [0.4, 0, 0.2, 1] as any,
                 }}
                 style={{ width: '400px', height: '400px' }}
               />

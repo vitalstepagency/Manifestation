@@ -75,7 +75,7 @@ export const RealityShatter: React.FC<RealityShatterProps> = ({
   achievement
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number>(0);
   const [phase, setPhase] = useState<Phase>(Phase.IDLE);
   const [shards, setShards] = useState<Shard[]>([]);
   const shardsRef = useRef<Shard[]>([]);
@@ -119,7 +119,7 @@ export const RealityShatter: React.FC<RealityShatterProps> = ({
         onComplete();
       }, duration);
       return () => clearTimeout(timer);
-    } else if (phase !== Phase.IDLE) {
+    } else if (phase >= Phase.SINGULARITY && phase < Phase.CELEBRATION) {
       // Progress to next phase
       const timer = setTimeout(() => {
         console.log(`⏭️ Moving from phase ${phase} to phase ${phase + 1}`);

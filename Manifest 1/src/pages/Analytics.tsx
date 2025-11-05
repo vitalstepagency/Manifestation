@@ -38,8 +38,8 @@ const Analytics = () => {
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>('30d');
   const [selectedMetric, setSelectedMetric] = useState<'completion' | 'streaks' | 'energy' | 'categories'>('completion');
 
-  const { habits, progressEntries, energyLevel } = useManifestStore();
-  const { totalStreak, completedHabitsToday, weeklyScore } = useManifestSelectors();
+  const { habits, progressEntries, currentEnergyLevel } = useManifestStore();
+  const { currentStreak, completedHabitsToday } = useManifestSelectors();
 
   // Generate mock data for charts
   const chartData = useMemo(() => {
@@ -54,14 +54,14 @@ const Analytics = () => {
         date: date.toISOString().split('T')[0],
         dateLabel: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
         completion: Math.floor(Math.random() * 100),
-        streak: Math.max(0, totalStreak - i + Math.floor(Math.random() * 3)),
+        streak: Math.max(0, currentStreak - i + Math.floor(Math.random() * 3)),
         energy: Math.floor(Math.random() * 10) + 1,
         habits: Math.floor(Math.random() * habits.length) + 1
       });
     }
     
     return data;
-  }, [timeRange, habits.length, totalStreak]);
+  }, [timeRange, habits.length, currentStreak]);
 
   // Category distribution data
   const categoryData = useMemo(() => {
@@ -86,9 +86,9 @@ const Analytics = () => {
 
   // Streak distribution data
   const streakData = [
-    { name: 'Current Streak', value: totalStreak, fill: '#8B5CF6' },
-    { name: 'Best Streak', value: Math.max(totalStreak + 5, 21), fill: '#06B6D4' },
-    { name: 'Average Streak', value: Math.floor(totalStreak * 0.7), fill: '#10B981' }
+    { name: 'Current Streak', value: currentStreak, fill: '#8B5CF6' },
+    { name: 'Best Streak', value: Math.max(currentStreak + 5, 21), fill: '#06B6D4' },
+    { name: 'Average Streak', value: Math.floor(currentStreak * 0.7), fill: '#10B981' }
   ];
 
   const stats = [
@@ -101,14 +101,14 @@ const Analytics = () => {
     },
     {
       title: 'Current Streak',
-      value: `${totalStreak} days`,
+      value: `${currentStreak} days`,
       change: 'Personal best!',
       icon: Flame,
       color: 'from-orange-500 to-red-500'
     },
     {
       title: 'Weekly Score',
-      value: weeklyScore,
+      value: completedHabitsToday,
       change: '+15% vs last week',
       icon: Star,
       color: 'from-purple-500 to-pink-500'
@@ -432,10 +432,8 @@ const Analytics = () => {
             <ResponsiveContainer width="100%" height="100%">
               <RadialBarChart cx="50%" cy="50%" innerRadius="20%" outerRadius="80%" data={streakData}>
                 <RadialBar
-                  minAngle={15}
                   label={{ position: 'insideStart', fill: '#fff' }}
                   background
-                  clockWise
                   dataKey="value"
                 />
                 <Tooltip 
@@ -459,12 +457,12 @@ const Analytics = () => {
             <div className="bg-white/5 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-white/80">Current Streak</span>
-                <span className="text-2xl font-bold text-white">{totalStreak} days</span>
+                <span className="text-2xl font-bold text-white">{currentStreak} days</span>
               </div>
               <div className="w-full bg-white/10 rounded-full h-2">
                 <div 
                   className="h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
-                  style={{ width: `${Math.min((totalStreak / 30) * 100, 100)}%` }}
+                  style={{ width: `${Math.min((currentStreak / 30) * 100, 100)}%` }}
                 />
               </div>
               <p className="text-white/60 text-sm mt-1">Goal: 30 days</p>
@@ -473,7 +471,7 @@ const Analytics = () => {
             <div className="bg-white/5 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-white/80">Best Streak</span>
-                <span className="text-2xl font-bold text-white">{Math.max(totalStreak + 5, 21)} days</span>
+                <span className="text-2xl font-bold text-white">{Math.max(currentStreak + 5, 21)} days</span>
               </div>
               <p className="text-white/60 text-sm">Personal record achieved!</p>
             </div>
@@ -481,7 +479,7 @@ const Analytics = () => {
             <div className="bg-white/5 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-white/80">Average Streak</span>
-                <span className="text-2xl font-bold text-white">{Math.floor(totalStreak * 0.7)} days</span>
+                <span className="text-2xl font-bold text-white">{Math.floor(currentStreak * 0.7)} days</span>
               </div>
               <p className="text-white/60 text-sm">Consistency is key!</p>
             </div>

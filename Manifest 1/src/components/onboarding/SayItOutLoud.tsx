@@ -119,7 +119,7 @@ export const SayItOutLoud: React.FC<SayItOutLoudProps> = ({
       transition: {
         scale: {
           duration: ceremonyDuration / 1000,
-          ease: 'easeInOut',
+          ease: [0.4, 0, 0.2, 1] as any,
         },
       },
     },

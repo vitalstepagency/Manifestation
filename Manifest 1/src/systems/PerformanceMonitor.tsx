@@ -53,7 +53,7 @@ export const usePerformanceMonitor = (targetFps: number = 60) => {
   const lastTimeRef = useRef(performance.now());
   const fpsHistoryRef = useRef<number[]>([]);
   const droppedFramesRef = useRef(0);
-  const rafIdRef = useRef<number>();
+  const rafIdRef = useRef<number>(0);
 
   useEffect(() => {
     const measurePerformance = () => {

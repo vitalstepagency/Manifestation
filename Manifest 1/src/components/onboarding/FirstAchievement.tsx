@@ -55,11 +55,11 @@ const THE_INITIATOR: Achievement = {
   description: 'You took the first step. Your transformation has begun.',
   icon: '🌟',
   category: 'onboarding',
-  tier: 'bronze',
   xp: 100,
   trigger: 'onboarding_complete',
-  isSecret: false,
-  unlockedAt: new Date(),
+  unlocked: true,
+  unlocked_at: new Date(),
+  celebrated: false,
 };
 
 // ============================================================================
@@ -201,7 +201,7 @@ export const FirstAchievement: React.FC<FirstAchievementProps> = ({
       y: -100,
       transition: {
         duration: 0.5,
-        ease: 'easeInOut',
+        ease: [0.4, 0, 0.2, 1] as any,
       },
     },
   };
@@ -216,7 +216,7 @@ export const FirstAchievement: React.FC<FirstAchievementProps> = ({
       opacity: 0,
       transition: {
         duration: 1.5,
-        ease: 'easeOut',
+        ease: [0, 0, 0.2, 1] as any,
       },
     },
   };
@@ -251,7 +251,7 @@ export const FirstAchievement: React.FC<FirstAchievementProps> = ({
                   transition={{
                     duration: 2.5,
                     delay: particle.delay,
-                    ease: 'easeIn',
+                    ease: [0.4, 0, 1, 1] as any,
                   }}
                   style={{
                     position: 'absolute',
@@ -283,7 +283,7 @@ export const FirstAchievement: React.FC<FirstAchievementProps> = ({
                 transition={{
                   duration: 2,
                   repeat: Infinity,
-                  ease: 'easeInOut',
+                  ease: [0.4, 0, 0.2, 1] as any,
                 }}
               />
             )}
@@ -379,7 +379,7 @@ export const FirstAchievement: React.FC<FirstAchievementProps> = ({
               {/* Tier badge */}
               <div className="absolute top-4 right-4 px-3 py-1 bg-yellow-600/20 border border-yellow-500/50 rounded-full">
                 <span className="text-xs font-semibold text-yellow-400 uppercase">
-                  {THE_INITIATOR.tier}
+                  Bronze
                 </span>
               </div>
             </div>
