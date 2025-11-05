@@ -3,8 +3,9 @@ import type { Database } from '../types';
 import type { Profile, Habit, NonNegotiable, ProgressEntry, JournalEntry, ManifestationNode } from '../types/index';
 
 // Supabase configuration
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+// Use custom-defined variables that are inlined by Vite during build
+const supabaseUrl = (typeof __VITE_SUPABASE_URL__ !== 'undefined' ? __VITE_SUPABASE_URL__ : import.meta.env.VITE_SUPABASE_URL) || '';
+const supabaseAnonKey = (typeof __VITE_SUPABASE_ANON_KEY__ !== 'undefined' ? __VITE_SUPABASE_ANON_KEY__ : import.meta.env.VITE_SUPABASE_ANON_KEY) || '';
 const supabaseServiceRoleKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || '';
 
 // Debug logging for production environment variable issues
