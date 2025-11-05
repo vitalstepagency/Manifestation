@@ -5,6 +5,18 @@ import { traeBadgePlugin } from 'vite-plugin-trae-solo-badge';
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    // Explicitly define env vars for production build - replaces at build time
+    'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(
+      process.env.VITE_SUPABASE_URL || ''
+    ),
+    'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(
+      process.env.VITE_SUPABASE_ANON_KEY || ''
+    ),
+    'import.meta.env.VITE_UNSPLASH_ACCESS_KEY': JSON.stringify(
+      process.env.VITE_UNSPLASH_ACCESS_KEY || ''
+    ),
+  },
   build: {
     sourcemap: 'hidden',
   },

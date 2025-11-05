@@ -2,22 +2,25 @@ import { createClient } from '@supabase/supabase-js';
 import type { Database } from '../types';
 import type { Profile, Habit, NonNegotiable, ProgressEntry, JournalEntry, ManifestationNode } from '../types/index';
 
-// Import runtime configuration (generated at build time from Vercel env vars)
-// @ts-ignore - runtime-config.js is generated at build time by inject-env.js script
-import { config as runtimeConfig } from '../runtime-config.js';
-
-// Supabase configuration - use runtime config (which has actual values baked in)
-const supabaseUrl = runtimeConfig.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = runtimeConfig.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+// Supabase configuration
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabaseServiceRoleKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || '';
 
-// Debug logging for production environment variable issues
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('❌ Supabase Environment Variables Missing:');
-  console.error('VITE_SUPABASE_URL:', supabaseUrl || 'MISSING');
-  console.error('VITE_SUPABASE_ANON_KEY:', supabaseAnonKey ? 'SET' : 'MISSING');
-  console.error('All import.meta.env vars:', import.meta.env);
-  throw new Error(`Missing Supabase environment variables. URL: ${supabaseUrl ? 'SET' : 'MISSING'}, Key: ${supabaseAnonKey ? 'SET' : 'MISSING'}`);
+// Debug logging for Vercel
+console.log('🔍 Supabase Config Check:');
+console.log('URL exists:', !!supabaseUrl);
+console.log('URL value:', supabaseUrl ? supabaseUrl.substring(0, 30) + '...' : 'MISSING');
+console.log('Key exists:', !!supabaseAnonKey);
+console.log('Key value:', supabaseAnonKey ? supabaseAnonKey.substring(0, 20) + '...' : 'MISSING');
+console.log('All env vars:', Object.keys(import.meta.env));
+
+if (!supabaseUrl) {
+  throw new Error('VITE_SUPABASE_URL is missing - check Vercel environment variables');
+}
+
+if (!supabaseAnonKey) {
+  throw new Error('VITE_SUPABASE_ANON_KEY is missing - check Vercel environment variables');
 }
 
 if (!supabaseServiceRoleKey) {
