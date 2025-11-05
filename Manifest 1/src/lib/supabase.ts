@@ -2,9 +2,13 @@ import { createClient } from '@supabase/supabase-js';
 import type { Database } from '../types';
 import type { Profile, Habit, NonNegotiable, ProgressEntry, JournalEntry, ManifestationNode } from '../types/index';
 
-// Supabase configuration
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+// Import runtime configuration (generated at build time from Vercel env vars)
+// @ts-ignore - runtime-config.js is generated at build time by inject-env.js script
+import { config as runtimeConfig } from '../runtime-config.js';
+
+// Supabase configuration - use runtime config (which has actual values baked in)
+const supabaseUrl = runtimeConfig.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = runtimeConfig.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 const supabaseServiceRoleKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || '';
 
 // Debug logging for production environment variable issues
